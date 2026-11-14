@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="row">
+    <!-- Left sidebar -->
+    {% include 'dashboard/side_bar.html' %}
+
+    <!-- Right side content -->
+    <div class="col-md-9">
+        <h2>All Posts</h2>
+        <a href="{% url 'add_post' %}" class="btn btn-dark text-light float-right mb-3">Add New</a>
+
+        <table class="table table-hover align-middle">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Title</th>
+                <th class="text-nowrap">Category</th>
+                <th class="text-nowrap">Author</th>
+                <th>Status</th>
+                <th>Featured</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+            {% for post in posts %}
+              <tr>
+                <td>{{ forloop.counter }}</td>
+                <td>{{ post.title }}</td>
+                <td class="text-nowrap">{{ post.category }}</td>
+                <td class="text-nowrap">{{ post.author }}</td>
+                <td>
+                  {% if post.status == 'Published' %}
+                    <span class="badge badge-success">Published</span>
+                  {% else %}
+                    <span class="badge badge-secondary">{{ post.status }}</span>
+                  {% endif %}
+                </td>
+                <td>
+                  {% if post.is_featured %}
+                    <span class="badge badge-warning">Featured</span>
+                  {% else %}
+                    <span class="text-muted">-</span>
+                  {% endif %}
+                </td>
+                <td class="text-nowrap">
+                    <a href="{% url 'edit_post' post.id%}"><i class="fa fa-edit text-success"></i></a>
+                    &nbsp;
+                    <a href="{% url 'delete_post' post.id %}"><i class="fa fa-trash text-danger"></i></a>
+                </td>
+              </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+{% endblock %}
